@@ -7,6 +7,8 @@ var THING = (function(opt){
 	};
 
 	// regex to help parse param attribute
+	// TODO - refactor this regex to trim off leading/trailing
+	//        whitespace from param value
 	var param_reg_ex = /[a-zA-Z0-9-_.\/\?=]+/g;
 
 	// object to contain user defined functions
@@ -128,7 +130,12 @@ var THING = (function(opt){
 
 				var param_array = name_value_array[i].match(param_reg_ex);
 
-				the_params[param_array[0]] = param_array[1];
+				// take first element of array to use as property name
+				var property_name = param_array.shift();
+
+				// set property value as string delimited by a single space
+				// TODO - refactor regular expression so as to not require the join below
+				the_params[property_name] = param_array.join(" ");
 			}
 		}
 
