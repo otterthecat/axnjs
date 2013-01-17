@@ -5,15 +5,19 @@
 	</head>
 	<body>
 		
-		<h1 data-thing-action="something" data-thing-params="header: new text is right here, stuff: blah">
-			Header One
+		<h1 data-axn="something" data-axn-event="click" data-axn-params="content: new text here">
+			This header will change when clicked
 		</h1>
 
-		<p data-thing-action="something" data-thing-params="a: 2, header: cake, b: cat, q: stuff, content: /path/to/api?var=true">
-			a paragraph
+		<p data-axn="something" data-axn-event="mouseover" data-axn-params="content: Boom!">
+			This paragraph will change when moused over
 		</p>
 
-		<script src="js/thing.js"></script>
+		<p data-axn="otherthing" data-axn-params="x: content updated on load">
+			second paragraph
+		</p>
+
+		<script src="js/axn.js"></script>
 		<script src="js/sample.js"></script>
 	</body>
 </html>

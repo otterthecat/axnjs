@@ -1,9 +1,9 @@
-var AXN = (function(opt){
+var axn = (function(opt){
 
-	// defalut settings prior to user input
+	// TODO - allow for defaults to be updated by user
 	var defaults = {
 
-		data_suffix: "axn"
+		data_name: "axn"
 	};
 
 	// regex to help parse param attribute
@@ -18,7 +18,7 @@ var AXN = (function(opt){
 	var actions = {};
 
 	// object to be returned
-	var axn = function(){};
+	var axn = new Function();
 
 	// initializer object that's to be called
 	// just before closure returns the 'axn' object
@@ -53,10 +53,10 @@ var AXN = (function(opt){
 	var apply_actions = function(){
 
 		// TODO - some legacy IE issues with DOMContentLoaded,
-		// 		  but I just wanted to get a first version out
+		// 		  but will suffice for now for proof of concept
 		document.addEventListener("DOMContentLoaded", function() {
 
-			for(item in actions){
+			for(var item in actions){
 
 				if(fn.hasOwnProperty(item)){
 
@@ -109,14 +109,14 @@ var AXN = (function(opt){
 	// arrays of objects containing an individual element and parameter object
 	// for use when the 'fn' object is finally required.
 	var parse_data_elements = function(el_array){
-		console.log("pfft");
+
 		for(var i = 0; i < el_array.length; i += 1){
-			console.log('+++ data-'+defaults.data_suffix);
-			if(el_array[i].hasAttribute('data-' + defaults.data_suffix)){
+
+			if(el_array[i].hasAttribute('data-' + defaults.data_name)){
 
 				var el = el_array[i];
-				var el_action = el.getAttribute('data-' + defaults.data_suffix);
-				console.log(el_action);
+				var el_action = el.getAttribute('data-' + defaults.data_name);
+
 				if(!actions.hasOwnProperty(el_action)){
 
 					actions[el_action] = new Array();
@@ -139,7 +139,7 @@ var AXN = (function(opt){
 
 		var the_params = {};
 
-		var str_value = element_obj.getAttribute('data-' + defaults.data_suffix + '-params'); 
+		var str_value = element_obj.getAttribute('data-' + defaults.data_name + '-params'); 
 
 		if(typeof str_value === "string"){
 
@@ -166,7 +166,7 @@ var AXN = (function(opt){
 
 		var the_event = "";
 
-		var str_value = element_obj.getAttribute('data-' + defaults.data_suffix + '-event'); 
+		var str_value = element_obj.getAttribute('data-' + defaults.data_name + '-event'); 
 
 		return str_value || null;
 	};
@@ -193,7 +193,8 @@ var AXN = (function(opt){
 			add_fn(namespace, func);
 		},
 
-		// moreso for debugging than anything else
+		// the following are moreso for debugging
+		// than anything else
 		getActions: function(property_str){
 
 			return actions.hasOwnProperty(property_str) ? actions[property_str] : actions;
@@ -210,6 +211,4 @@ var AXN = (function(opt){
 
 	// return new axn
 	return new axn();
-});
-
-var axn = new AXN();
+})();

@@ -1,7 +1,9 @@
-thing.add('something', function(args){
+axn.add('something', function(args){
 
-	this.onclick = function(){
-		
-		this.innerHTML = args.header;
-	}
+	this.innerHTML = args.content;
+});
+
+axn.add('otherthing', function(args){
+
+	this.innerHTML = args.x;
 });
