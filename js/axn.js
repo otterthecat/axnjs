@@ -9,7 +9,7 @@ var axn = (function(opt){
 	// regex to help parse param attribute
 	// TODO - refactor this regex to trim off leading/trailing
 	//        whitespace from param value
-	var param_reg_ex = /[a-zA-Z0-9-_.\/\?=]+/g;
+	var param_reg_ex = /[a-zA-Z0-9-_.\/\?=\!]+/g;
 
 	// object to contain user defined functions
 	var fn = {};
