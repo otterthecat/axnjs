@@ -1,9 +1,20 @@
-var axn = (function(opt){
+var axn = (function(){
 
-	// TODO - allow for defaults to be updated by user
 	var defaults = {
 
-		data_name: "axn"
+		data_name: "axn",
+		dom_ready_callback: function(){}
+	};
+
+	// update defaults with any settings from user
+	var update_defaults = function(config_obj){
+		if(typeof config_obj === 'object'){
+
+			for(var item in config_obj) {
+
+				defaults[item] = config_obj[item];
+			}
+		}
 	};
 
 	// regex to help parse param attribute
@@ -24,11 +35,15 @@ var axn = (function(opt){
 	// just before closure returns the 'axn' object
 	var init = function(){
 
-		// get all actions
-		find_actions();
+		// TODO - some legacy IE issues with DOMContentLoaded,
+		// but will suffice for now for proof of concept
+		document.addEventListener("DOMContentLoaded", function() {
+			// get all actions
+			find_actions();
 
-		// fire action functions on page/dom load
-		apply_actions();
+			// fire action functions on page/dom load
+			apply_actions();
+		}, false);
 	};
 
 	var execute_fn = function(action, func){
@@ -52,23 +67,18 @@ var axn = (function(opt){
 	// to get properties via namespace, and maps it out to the 'fn' object
 	var apply_actions = function(){
 
-		// TODO - some legacy IE issues with DOMContentLoaded,
-		// 		  but will suffice for now for proof of concept
-		document.addEventListener("DOMContentLoaded", function() {
+		for(var item in actions){
 
-			for(var item in actions){
+			if(fn.hasOwnProperty(item)){
 
-				if(fn.hasOwnProperty(item)){
+				var the_func = fn[item];
 
-					var the_func = fn[item];
+				for(var i = 0; i < actions[item].length; i += 1){
 
-					for(var i = 0; i < actions[item].length; i += 1){
-
-						execute_fn(actions[item][i], fn[item]);
-					}
+					execute_fn(actions[item][i], fn[item]);
 				}
 			}
-		}, false);
+		}
 	};
 
 
@@ -191,6 +201,17 @@ var axn = (function(opt){
 		add: function(namespace, func){
 
 			add_fn(namespace, func);
+		},
+
+		configure: function(options_obj){
+
+			if(typeof options_obj === 'object'){
+				
+				update_defaults(options_obj);
+			} else {
+
+				console.error("AXN.config() requires object literal");
+			}
 		},
 
 		// the following are moreso for debugging
