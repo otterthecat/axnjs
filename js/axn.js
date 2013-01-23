@@ -40,7 +40,7 @@ var axn = (function(){
 		// but will suffice for now for proof of concept
 		document.addEventListener("DOMContentLoaded", function() {
 			// get all actions
-			find_actions();
+			find_actions(defaults.root_selector);
 
 			// fire action functions on page/dom load
 			apply_actions();
@@ -85,26 +85,26 @@ var axn = (function(){
 
 	// grab defined actions from page DOM via
 	// the set data attributes in the html/view
-	var find_actions = function(){
+	var find_actions = function(selector){
 
 		var all_elements;
 
-		if(typeof defaults.root_selector === 'string'){
+		if(typeof selector === 'string'){
 
-			switch(defaults.root_selector.substr(0, 1)){
+			switch(selector.substr(0, 1)){
 
 				case "#":
-					all_elements = [document.getElementById(defaults.root_selector)];
+					all_elements = [document.getElementById(selector)];
 					break;
 
 				case ".":
 
-					all_elements = document.getElementsByClassName(defaults.root_selector);
+					all_elements = document.getElementsByClassName(selector);
 					break;
 
 				default: 
 
-					all_elements = document.getElementsByTagName(defaults.root_selector);
+					all_elements = document.getElementsByTagName(selector);
 					break;
 			}
 
