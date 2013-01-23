@@ -3,6 +3,7 @@ var axn = (function(){
 	var defaults = {
 
 		data_name: "axn",
+		root_selector: null,
 		dom_ready_callback: function(){}
 	};
 
@@ -84,32 +85,32 @@ var axn = (function(){
 
 	// grab defined actions from page DOM via
 	// the set data attributes in the html/view
-	var find_actions = function(selector_str){
+	var find_actions = function(){
 
 		var all_elements;
 
-		if(typeof selector_str === 'string'){
+		if(typeof defaults.root_selector === 'string'){
 
-			switch(selector_str.substr(0, 1)){
+			switch(defaults.root_selector.substr(0, 1)){
 
 				case "#":
-					all_elements = [document.getElementById(selector_str)];
+					all_elements = [document.getElementById(defaults.root_selector)];
 					break;
 
 				case ".":
 
-					all_elements = document.getElementsByClassName(selector_str);
+					all_elements = document.getElementsByClassName(defaults.root_selector);
 					break;
 
 				default: 
 
-					console.error("AXN - selector used to find data actions is not valid");
+					all_elements = document.getElementsByTagName(defaults.root_selector);
 					break;
 			}
 
 		} else {
 
-			all_elements = document.getElementsByTagName('*');
+			all_elements = document.getElementsByTagName("*");
 		}
 
 		return parse_data_elements(all_elements);
