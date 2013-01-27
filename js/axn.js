@@ -4,6 +4,7 @@ var axn = (function(){
 
 		data_name: "axn",
 		root_selector: null,
+		jsonp_callback: 'callback',
 		dom_ready_callback: function(){}
 	};
 
@@ -36,19 +37,33 @@ var axn = (function(){
 	// just before closure returns the 'axn' object
 	var init = function(){
 
-		// TODO - some legacy IE issues with DOMContentLoaded,
-		// but will suffice for now for proof of concept
-		document.addEventListener("DOMContentLoaded", function() {
+		if(document.readyState == 'complete'){
+
 			// get all actions
 			find_actions(defaults.root_selector);
 
 			// fire action functions on page/dom load
 			apply_actions();
-		}, false);
+			return;
+		}
+
+		document.onreadystatechange = function(){
+
+			if(document.readyState == 'complete'){
+
+				// get all actions
+				find_actions(defaults.root_selector);
+
+				// fire action functions on page/dom load
+				apply_actions();
+			}
+		};
 	};
 
 	var execute_fn = function(action, func){
 
+		// TODO - better handle checks for JSONP
+		// (I just wanted to get the feature in fast)
 		if(action.evt){
 
 				action.element.addEventListener(action.evt, function(event){
@@ -59,7 +74,7 @@ var axn = (function(){
 						func.call(action.element, action.params);
 					} else{
 					
-						do_jsonp(action.jsonp, {name: 'axn_jsonp_callback', fn: func});	
+						do_jsonp(action, func);	
 					};
 						
 				}, false);
@@ -70,7 +85,7 @@ var axn = (function(){
 				func.call(action.element, action.params);
 			} else {
 
-				do_jsonp(action.jsonp, {name: 'axn_jsonp_callback', fn: func});
+				do_jsonp(action, func);
 			}
 		}
 
@@ -146,6 +161,7 @@ var axn = (function(){
 				};
 
 				actions[el_action].push({
+					name: el_action,
 					params: parse_params(el),
 					evt: parse_attr(el, 'event'),
 					element: el,
@@ -194,18 +210,18 @@ var axn = (function(){
 	};
 
 
-	var do_jsonp = function(url, callback){
+	var do_jsonp = function(action, callback){
 
 		var new_script = document.createElement('script');
-		new_script.src =  url + 'callback='+callback.name;
+		new_script.src =  action.jsonp + '&' + defaults.jsonp_callback + '=' + action.name;
 
-		window[callback.name] = function(data){
+		window[action.name] = function(data){
 
-			callback.fn(data);
+			callback.call(action.element, data, action.params);
 
 			// after the jsonp callback is complete,
 			// remove it from the global namespace
-			delete window[callback.name];
+			delete window[action.name];
 		};
 
 		document.getElementsByTagName('body')[0].appendChild(new_script);
@@ -231,6 +247,7 @@ var axn = (function(){
 		add: function(namespace, func){
 
 			add_fn(namespace, func);
+			return this;
 		},
 
 		configure: function(options_obj){
@@ -241,11 +258,14 @@ var axn = (function(){
 			} else {
 
 				console.error("AXN.config() requires object literal");
-			}
+			};
+
+			return this;
 		},
 
-		// the following are moreso for debugging
-		// than anything else
+		// the methods below are all primarily intended for
+		// debugging purposes, but may have applications
+		// under certain situations. 
 		getActions: function(property_str){
 
 			return actions.hasOwnProperty(property_str) ? actions[property_str] : actions;
@@ -259,6 +279,11 @@ var axn = (function(){
 		getConfig: function(){
 
 			return defaults;
+		},
+
+		exec: function(){
+
+			apply_actions();
 		}
 	};
 

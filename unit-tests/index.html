@@ -3,9 +3,6 @@
 	<head>
 		<title>AXN Unit Tests</title>
 		<link rel="stylesheet" href="qunit/css/qunit.css" type="text/css" media="screen">
-		<script type="text/javascript" src="qunit/js/qunit"></script>
-		<script type="text/javascript" src="../js/axn.js"></script>
-		<script type="text/javascript" src="test/axn-test.js"></script>
 	</head>
 	<body>
 		<h1 id="qunit-header">AXN Unit Tests</h1>
@@ -18,7 +15,13 @@
 		<ol id="qunit-tests"></ol>
 		
 		<div id="qunit-fixture">
-			<!-- my test markup goes here -->
+			<div data-axn="unit-test" data-axn-params="first: number one, second: number two"></div>
+
+			<div data-axn="jsonp_test" data-axn-jsonp="https://api.twitter.com/1/statuses/user_timeline.json?screen_name=otterthecat&count=3&"></div>
 	  	</div>
+
+		<script type="text/javascript" src="qunit/js/qunit"></script>
+		<script type="text/javascript" src="../js/axn.js"></script>
+		<script type="text/javascript" src="test/axn-test.js"></script>
 	</body>
 </html>

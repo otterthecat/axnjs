@@ -1,25 +1,38 @@
-test('AXN Debug Methods', function(){
+test('AXN Methods - .getActions()', function(){
 
-	equal(typeof axn.getActions(), 'object', '.getActions() returns an object');
-	equal(typeof axn.getFunctions(), 'object', '.getFunctions() returns an object');
-	equal(typeof axn.getConfig(), 'object', '.getConfig() returns an object');
+	deepEqual(typeof axn.getActions(), 'object', '.getActions() returns an object');
 });
 
-test('AXN Unit Tests', function(){
+test('AXN Methods - .getFunctions()', function(){
+
+	deepEqual(typeof axn.getFunctions(), 'object', '.getFunctions() returns an object');
+});
+
+test('AXN Methods - .getConfig()', function(){
+
+	deepEqual(typeof axn.getConfig(), 'object', '.getConfig() returns an object');
+});
+
+test('AXN Methods - .configure()', function(){
 
 	axn.configure({
 		root_selector: 'body'
 	});
 
-	equal(axn.getConfig().root_selector, 'body', '.configure() properly adds user settings');
+	deepEqual(axn.getConfig().root_selector, 'body', '.configure() properly adds user settings');
+
+});
+
+asyncTest('AXN Methods - .add()', function(){
 
 	axn.add('unit-test', function(){
 
+		ok(true, '.add() properly exectuted applied function');
+	})
+	.add('jsonp_test', function(data){
 
-	});	
-
-	equal(typeof axn.getActions('unit-test'), 'object', '.add() properly add new action');
-
-	equal(typeof axn.getFunctions('unit-test'), 'function', '.add() properly add new function');
-
+		ok(true, 'JSONP callback via .add() successfully executed');
+		deepEqual(typeof data, 'object', 'JSONP callback via .add() succefully recieved data');
+		start();
+	}).exec();
 });

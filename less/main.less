@@ -1,6 +1,9 @@
+@primary_color: rgb(125, 125, 125);
+@face_color: lighten(@primary_color, 25%);
+
 body{
-	background-color: #aaa;
-	color: #ddd;
+	background-color: @primary_color;
+	color: @face_color;
 	margin: 0;
 	padding: 0 20%;
 	font-family: Arial, sans-serif;
@@ -10,7 +13,20 @@ h1{
 	text-transform: uppercase;
 }
 
+ul{
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+
+	li{
+		padding: 5px 0;
+		border: 1px dotted @face_color;
+		border-left: none;
+		border-right: none;
+	}
+}
+
 p{
-	border: 1px solid #ddd;
+	border: 1px solid @face_color;
 	padding: 20px;
 }

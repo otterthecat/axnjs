@@ -10,8 +10,11 @@ axn.add('otherthing', function(args){
 
 axn.add('jtothep', function(data){
 
+	var tweets = "";
 	for(var i = 0; i < data.length; i += 1){
 
-		console.log(data[i].text);
+		tweets += "<li>" + data[i].text + "</li>";
 	}
+	
+	this.innerHTML += tweets;
 });
