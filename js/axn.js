@@ -180,6 +180,25 @@ var axn = (function(){
 		return str_value || null;
 	};
 
+
+	var do_jsonp = function(url, callback){
+
+		var new_script = document.createElement('script');
+		new_script.src =  url;
+
+		window[callback.name] = function(){
+
+			callback.fn();
+
+			// after the jsonp callback is complete,
+			// remove it from the global namespace
+			delete window[callback.name];
+		};
+
+		document.getElementsByTagName('body')[0].appendChild();
+	};
+
+
 	// add a property to the 'fn' object defined by namespace, and
 	// give it the value of the 2nd argument (a function)
 	var add_fn = function(namespace, func){
