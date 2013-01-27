@@ -51,15 +51,27 @@ var axn = (function(){
 
 		if(action.evt){
 
-			action.element.addEventListener(action.evt, function(event){
+				action.element.addEventListener(action.evt, function(event){
 
-				event.preventDefault();
-				func.call(action.element, action.params);	
-			}, false)
+					event.preventDefault();
 
+					if(!action.jsonp){
+						func.call(action.element, action.params);
+					} else{
+					
+						do_jsonp(action.jsonp, {name: 'axn_jsonp_callback', fn: func});	
+					};
+						
+				}, false);
 		} else {
 
-			func.call(action.element, action.params);
+			if(!action.jsonp){
+			
+				func.call(action.element, action.params);
+			} else {
+
+				do_jsonp(action.jsonp, {name: 'axn_jsonp_callback', fn: func});
+			}
 		}
 
 	};
@@ -136,7 +148,8 @@ var axn = (function(){
 				actions[el_action].push({
 					params: parse_params(el),
 					evt: parse_attr(el, 'event'),
-					element: el
+					element: el,
+					jsonp: parse_attr(el, 'jsonp')
 				});
 			}
 		}
@@ -184,18 +197,18 @@ var axn = (function(){
 	var do_jsonp = function(url, callback){
 
 		var new_script = document.createElement('script');
-		new_script.src =  url;
+		new_script.src =  url + 'callback='+callback.name;
 
-		window[callback.name] = function(){
+		window[callback.name] = function(data){
 
-			callback.fn();
+			callback.fn(data);
 
 			// after the jsonp callback is complete,
 			// remove it from the global namespace
 			delete window[callback.name];
 		};
 
-		document.getElementsByTagName('body')[0].appendChild();
+		document.getElementsByTagName('body')[0].appendChild(new_script);
 	};
 
 
