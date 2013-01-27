@@ -219,9 +219,9 @@ var axn = (function(){
 			return actions.hasOwnProperty(property_str) ? actions[property_str] : actions;
 		},
 
-		getFunctions: function(){
+		getFunctions: function(name_str){
 
-			return fn;
+			return fn.hasOwnProperty(name_str) ? fn[name_str] : fn;
 		},
 
 		getConfig: function(){
