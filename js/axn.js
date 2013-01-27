@@ -135,7 +135,7 @@ var axn = (function(){
 
 				actions[el_action].push({
 					params: parse_params(el),
-					evt: parse_event(el),
+					evt: parse_attr(el, 'event'),
 					element: el
 				});
 			}
@@ -172,12 +172,10 @@ var axn = (function(){
 		return the_params;
 	};
 
-	// get defined event from element (optional)
-	var parse_event = function(element_obj){
+	// get defined data attribute from an element
+	var parse_attr = function(element_obj, attr){
 
-		var the_event = "";
-
-		var str_value = element_obj.getAttribute('data-' + defaults.data_name + '-event'); 
+		var str_value = element_obj.getAttribute('data-' + defaults.data_name + '-' + attr);
 
 		return str_value || null;
 	};
@@ -194,7 +192,6 @@ var axn = (function(){
 
 		fn[namespace] = func;
 	};
-
 
 	// attach methods to axn's prototype object
 	axn.prototype = {
@@ -225,6 +222,11 @@ var axn = (function(){
 		getFunctions: function(){
 
 			return fn;
+		},
+
+		getConfig: function(){
+
+			return defaults;
 		}
 	};
 
