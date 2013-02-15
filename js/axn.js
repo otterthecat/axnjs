@@ -8,16 +8,21 @@ var axn = (function(){
 		dom_ready_callback: function(){}
 	};
 
-	// update defaults with any settings from user
-	var update_defaults = function(config_obj){
-		if(typeof config_obj === 'object'){
+	// utility to merge object properties
+	var merge = function(orig_obj, new_obj){
 
-			for(var item in config_obj) {
+		if(typeof orig_obj === 'object' && typeof new_obj === 'object'){
 
-				defaults[item] = config_obj[item];
+			for(var item in orig_obj) {
+
+				orig_obj[item] = new_obj[item];
 			}
+			return orig_obj;
 		}
+
+		return false;
 	};
+
 
 	// regex to help parse param attribute
 	// TODO - refactor this regex to trim off leading/trailing
@@ -29,6 +34,8 @@ var axn = (function(){
 
 	// object to hold actions defined in data attributes
 	var actions = {};
+
+	var stored_data = {};
 
 	// object to be returned
 	var axn = new Function();
@@ -58,7 +65,7 @@ var axn = (function(){
 
 			action.element.addEventListener(action.evt, function(event){
 
-				event.preventDefault();
+				//event.preventDefault();
 
 				if(!action.jsonp){
 					func.call(action.element, action.params);
@@ -173,6 +180,7 @@ var axn = (function(){
 			}
 		}
 
+		stored_data[element_obj.getAttribute('data-' + defaults.data_name)] = the_params;
 		return the_params;
 	};
 
@@ -225,11 +233,27 @@ var axn = (function(){
 			return this;
 		},
 
+		update: function(namespace, data, live){
+			
+			var do_live = typeof live === 'boolean' && live === true;
+
+			var all_actions = actions[namespace];
+			for(var i = 0; i < all_actions.length; i += 1){
+			
+				merge(actions[namespace][i].params, data);
+
+				if(do_live){
+
+					fn[namespace].call(actions[namespace][i].element, actions[namespace][i].params);
+				}			
+			};
+		},
+
 		configure: function(options_obj){
 
 			if(typeof options_obj === 'object'){
 				
-				update_defaults(options_obj);
+				merge(defaults, options_obj);
 			} else {
 
 				console.error("AXN.config() requires object literal");
@@ -249,6 +273,11 @@ var axn = (function(){
 		getFunctions: function(name_str){
 
 			return fn.hasOwnProperty(name_str) ? fn[name_str] : fn;
+		},
+
+		getStoredData: function(name_str){
+
+			return stored_data.hasOwnProperty(name_str) ? stored_data[name_str] : stored_data;
 		},
 
 		getConfig: function(){

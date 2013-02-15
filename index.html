@@ -5,16 +5,25 @@
 	</head>
 	<body>
 		
+		<!-- binds 'something' action onto click event -->
 		<h1 data-axn="something" data-axn-event="click" data-axn-params="content: new text here">
 			This header will change when clicked
 		</h1>
+
+		<!-- binds 'jtothep' action onto click event -->
 		<ul data-axn="jtothep" data-axn-event="click" data-axn-jsonp="https://api.twitter.com/1/statuses/user_timeline.json?screen_name=otterthecat&count=3&">
 			<li>clicking here will get a Twitter feed from JSONP</li>
 		</ul>
+
+		<!-- binds 'something' action onto mouseover event -->
 		<p data-axn="something" data-axn-event="mouseover" data-axn-params="content: Boom!">
 			This paragraph will change when moused over
 		</p>
 
+		<!-- binds 'something-editor' action onto keyup event -->
+		<input type="text" data-axn="something-editor" data-axn-event="keyup">
+
+		<!-- 'otherthing' action will execute immediately, as no event is defined -->
 		<p data-axn="otherthing" data-axn-params="x: content updated on load">
 			second paragraph
 		</p>
