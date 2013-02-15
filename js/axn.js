@@ -37,16 +37,6 @@ var axn = (function(){
 	// just before closure returns the 'axn' object
 	var init = function(){
 
-		if(document.readyState == 'complete'){
-
-			// get all actions
-			find_actions(defaults.root_selector);
-
-			// fire action functions on page/dom load
-			apply_actions();
-			return;
-		}
-
 		document.onreadystatechange = function(){
 
 			if(document.readyState == 'complete'){
@@ -66,18 +56,18 @@ var axn = (function(){
 		// (I just wanted to get the feature in fast)
 		if(action.evt){
 
-				action.element.addEventListener(action.evt, function(event){
+			action.element.addEventListener(action.evt, function(event){
 
-					event.preventDefault();
+				event.preventDefault();
 
-					if(!action.jsonp){
-						func.call(action.element, action.params);
-					} else{
+				if(!action.jsonp){
+					func.call(action.element, action.params);
+				} else{
 					
-						do_jsonp(action, func);	
-					};
+					do_jsonp(action, func);	
+				};
 						
-				}, false);
+			}, false);
 		} else {
 
 			if(!action.jsonp){
@@ -118,26 +108,11 @@ var axn = (function(){
 
 		if(typeof selector === 'string'){
 
-			switch(selector.substr(0, 1)){
-
-				case "#":
-					all_elements = [document.getElementById(selector)];
-					break;
-
-				case ".":
-
-					all_elements = document.getElementsByClassName(selector);
-					break;
-
-				default: 
-
-					all_elements = document.getElementsByTagName(selector);
-					break;
-			}
+			all_elements = document.querySelectorAll(selector);
 
 		} else {
 
-			all_elements = document.getElementsByTagName("*");
+			all_elements = document.querySelectorAll("*");
 		}
 
 		return parse_data_elements(all_elements);
