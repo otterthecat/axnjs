@@ -62,11 +62,11 @@ If, in the above example, you wanted to have your 'do_action' function fire on -
 
 The attribute data-axn-event will accept any string accepted by .addEventListener(), as it uses the latter to apply the method to the stated element. If no event is defined in the element, then it's action it executed on page/dom ready.
 
-Finally, the last data attribute that is available is used for JSONP requests:
+Also, the "params" data attribute accepts a 'jsonp' key with a value being the URL that is used for JSONP requests:
 
-	<div data-axn="do_jsonp" data-axn-jsonp="url_to_service"></div>
+	<div data-axn="do_jsonp" data-axn-params="jsonp: url_to_service"></div>
 
-The value of data-axn-jsonp should be a string to the url of which you wish to call your JSONP service.
+The value of jsonp should be a string to the url of which you wish to call your JSONP service.
 In the above example, we gave it a new value for the data-axn attribute. To process the JSONP callback, we needo to use this new name to define a new axn function. Be sure to remember to pass your data from the service back to your function:
 
 	<script>
