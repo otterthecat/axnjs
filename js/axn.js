@@ -27,7 +27,7 @@ var axn = (function(){
 	// regex to help parse param attribute
 	// TODO - refactor this regex to trim off leading/trailing
 	//        whitespace from param value
-	var param_reg_ex = /[a-zA-Z0-9-_.\/\?=\!]+/g;
+	var param_reg_ex = /:?[a-zA-Z0-9-_.\/\?=\!\&]+/g;
 
 	// object to contain user defined functions
 	var fn = {};
@@ -67,7 +67,8 @@ var axn = (function(){
 
 				//event.preventDefault();
 
-				if(!action.jsonp){
+				if(!action.params.jsonp){
+
 					func.call(action.element, action.params);
 				} else{
 					
@@ -77,7 +78,7 @@ var axn = (function(){
 			}, false);
 		} else {
 
-			if(!action.jsonp){
+			if(!action.params.jsonp){
 			
 				func.call(action.element, action.params);
 			} else {
@@ -176,7 +177,7 @@ var axn = (function(){
 
 				// set property value as string delimited by a single space
 				// TODO - refactor regular expression so as to not require the join below
-				the_params[property_name] = param_array.join(" ");
+				the_params[property_name] = param_array.join("");
 			}
 		}
 
@@ -196,7 +197,7 @@ var axn = (function(){
 	var do_jsonp = function(action, callback){
 
 		var new_script = document.createElement('script');
-		new_script.src =  action.jsonp + '&' + defaults.jsonp_callback + '=' + action.name;
+		new_script.src =  action.params.jsonp + '&' + defaults.jsonp_callback + '=' + action.name;
 
 		window[action.name] = function(data){
 
@@ -242,7 +243,10 @@ var axn = (function(){
 			
 				merge(actions[namespace][i].params, data);
 
-				if(do_live){
+				if(typeof actions[namespace][i].params.jsonp === "string" && do_live){
+
+					do_jsonp(actions[namespace][i], fn[namespace]);
+				} else if(do_live){
 
 					fn[namespace].call(actions[namespace][i].element, actions[namespace][i].params);
 				}			
