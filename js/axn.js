@@ -37,6 +37,8 @@ var axn = (function(){
 
 	var stored_data = {};
 
+	var _bind_target = {};
+
 	// object to be returned
 	var axn = new Function();
 
@@ -148,7 +150,8 @@ var axn = (function(){
 					params: parse_params(el),
 					evt: parse_attr(el, 'event'),
 					element: el,
-					jsonp: parse_attr(el, 'jsonp')
+					jsonp: parse_attr(el, 'jsonp'),
+					bindings: []
 				});
 			}
 		}
@@ -225,6 +228,14 @@ var axn = (function(){
 		fn[namespace] = func;
 	};
 
+	var add_binding = function(namespace, target){
+
+		actions[namespace].bindings.push(target);
+
+		_bind_target = {};
+	};
+
+
 	// attach methods to axn's prototype object
 	axn.prototype = {
 
@@ -251,6 +262,24 @@ var axn = (function(){
 					fn[namespace].call(actions[namespace][i].element, actions[namespace][i].params);
 				}			
 			};
+		},
+
+		bind: function(namespace){
+
+			if(typeof namespace !== 'string'){
+
+				return false;
+			};
+
+			_bind_target = this.getActions(namespace);
+
+			return this;
+		},
+
+		to: function(namespace, func){
+
+			add_fn(namespace, func);
+			add_binding(namespace, _bind_target);
 		},
 
 		configure: function(options_obj){
