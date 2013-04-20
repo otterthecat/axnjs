@@ -99,8 +99,6 @@ var axn = (function(){
 
 			if(fn.hasOwnProperty(item)){
 
-				var the_func = fn[item];
-
 				for(var i = 0; i < actions[item].length; i += 1){
 
 					execute_fn(actions[item][i], fn[item]);
