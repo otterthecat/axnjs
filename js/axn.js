@@ -44,7 +44,7 @@ var axn = (function(){
 
 	// initializer object that's to be called
 	// just before closure returns the 'axn' object
-	var init = function(){
+	var init = function(callback){
 
 		document.onreadystatechange = function(){
 
@@ -53,13 +53,15 @@ var axn = (function(){
 				// get all actions
 				find_actions(defaults.root_selector);
 
+				callback();
+
 				// fire action functions on page/dom load
 				apply_actions();
 			}
 		};
 	};
 
-	var execute_fn = function(action, func){
+	var execute_fn = function(action, func, binds){
 
 		// TODO - better handle checks for JSONP
 		// (I just wanted to get the feature in fast)
@@ -72,9 +74,13 @@ var axn = (function(){
 				if(!action.params.jsonp){
 
 					func.call(action.element, action.params);
+					if(action.bindings.length > 0){
+
+						update_bindings(action.bindings[0][0].name, action.params);
+					}
 				} else{
 					
-					do_jsonp(action, func);	
+					do_jsonp(action, func);
 				};
 						
 			}, false);
@@ -83,12 +89,35 @@ var axn = (function(){
 			if(!action.params.jsonp){
 			
 				func.call(action.element, action.params);
+				if(action.bindings.length > 0){
+
+					update_bindings(action.bindings[0][0].name, action.params);
+				}
 			} else {
 
 				do_jsonp(action, func);
 			}
 		}
 
+	};
+
+	var update_bindings = function(namespace, data, live){
+
+			var do_live = typeof live === 'boolean' && live === true;
+
+			var all_actions = actions[namespace];
+			for(var i = 0; i < all_actions.length; i += 1){
+			
+				merge(actions[namespace][i].params, data);
+
+				if(typeof actions[namespace][i].params.jsonp === "string" && do_live){
+
+					do_jsonp(actions[namespace][i], fn[namespace]);
+				} else if(do_live){
+
+					fn[namespace].call(actions[namespace][i].element, actions[namespace][i].params);
+				}
+			};
 	};
 
 	// waits for DOM to be fully loaded before looping through actions object
@@ -101,7 +130,7 @@ var axn = (function(){
 
 				for(var i = 0; i < actions[item].length; i += 1){
 
-					execute_fn(actions[item][i], fn[item]);
+					execute_fn(actions[item][i], fn[item], actions[item][i].bindings);
 				}
 			}
 		}
@@ -228,7 +257,10 @@ var axn = (function(){
 
 	var add_binding = function(namespace, target){
 
-		actions[namespace].bindings.push(target);
+		for(var i = 0; i < target.length; i += 1){
+
+			actions[namespace][0].bindings.push(target);
+		}
 
 		_bind_target = {};
 	};
@@ -280,6 +312,11 @@ var axn = (function(){
 			add_binding(namespace, _bind_target);
 		},
 
+		ready: function(callback){
+
+			init(callback);
+		},
+
 		configure: function(options_obj){
 
 			if(typeof options_obj === 'object'){
@@ -323,7 +360,7 @@ var axn = (function(){
 	};
 
 	// initialize to set actions/params
-	init();
+	//init();
 
 	// return new axn
 	return new axn();

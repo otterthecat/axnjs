@@ -1,5 +1,6 @@
 // AXN.JS
 // sample usages
+axn.ready(function(){
 
 // action 'something' is set for 2 different
 // elements in index.html - each with different events
@@ -18,11 +19,11 @@ axn.add('otherthing', function(args){
 // action 'something-editor' is a text field
 // that will update paramters for the actions
 // bound to 'something' above
-axn.add('something-editor', function(args){
+axn.bind('something').to('something-editor', function(args){
 
 	// update data params for elements bound
 	//  to the 'something' action
-	axn.update('something', {content: this.value});
+	args.content = this.value;
 });
 
 // action 'jtothep' will, after the defined event,
@@ -36,4 +37,6 @@ axn.add('jtothep', function(data){
 	}
 	
 	this.innerHTML += tweets;
+});
+
 });
