@@ -23,16 +23,13 @@ test('AXN Methods - .configure()', function(){
 
 });
 
-asyncTest('AXN Methods - .add()', function(){
+test('AXN Methods - .add()', function(){
 
+	var test_var = false
 	axn.add('unit-test', function(){
 
-		ok(true, '.add() properly exectuted applied function');
-	})
-	.add('jsonp_test', function(data){
-
-		ok(true, 'JSONP callback via .add() successfully executed');
-		deepEqual(typeof data, 'object', 'JSONP callback via .add() succefully recieved data');
-		start();
+		test_var =  "added unit-test";
 	}).exec();
+
+	deepEqual(typeof axn.getFunctions('unit-test'), 'function', '.add() successfully added function');
 });

@@ -71,7 +71,7 @@ var axn = (function(){
 
 				//event.preventDefault();
 
-				if(!action.params.jsonp){
+				if(!action.jsonp){
 
 					func.call(action.element, action.params);
 					if(action.bindings.length > 0){
@@ -79,14 +79,14 @@ var axn = (function(){
 						update_bindings(action.bindings[0][0].name, action.params);
 					}
 				} else{
-					
+					console.log("triggered jsonp");
 					do_jsonp(action, func);
 				};
 						
 			}, false);
 		} else {
 
-			if(!action.params.jsonp){
+			if(!action.jsonp){
 			
 				func.call(action.element, action.params);
 				if(action.bindings.length > 0){
@@ -94,7 +94,7 @@ var axn = (function(){
 					update_bindings(action.bindings[0][0].name, action.params);
 				}
 			} else {
-
+				console.log("running jsonp");
 				do_jsonp(action, func);
 			}
 		}
@@ -110,7 +110,7 @@ var axn = (function(){
 			
 				merge(actions[namespace][i].params, data);
 
-				if(typeof actions[namespace][i].params.jsonp === "string" && do_live){
+				if(typeof actions[namespace][i].jsonp === "string" && do_live){
 
 					do_jsonp(actions[namespace][i], fn[namespace]);
 				} else if(do_live){
@@ -225,9 +225,9 @@ var axn = (function(){
 
 
 	var do_jsonp = function(action, callback){
-
+		console.log("doing it");
 		var new_script = document.createElement('script');
-		new_script.src =  action.params.jsonp + '&' + defaults.jsonp_callback + '=' + action.name;
+		new_script.src =  action.jsonp + '&' + defaults.jsonp_callback + '=' + action.name;
 
 		window[action.name] = function(data){
 
@@ -284,7 +284,7 @@ var axn = (function(){
 			
 				merge(actions[namespace][i].params, data);
 
-				if(typeof actions[namespace][i].params.jsonp === "string" && do_live){
+				if(typeof actions[namespace][i].jsonp === "string" && do_live){
 
 					do_jsonp(actions[namespace][i], fn[namespace]);
 				} else if(do_live){
