@@ -79,7 +79,7 @@ var axn = (function(){
 						update_bindings(action.bindings[0][0].name, action.params);
 					}
 				} else{
-					console.log("triggered jsonp");
+
 					do_jsonp(action, func);
 				};
 						
@@ -94,7 +94,7 @@ var axn = (function(){
 					update_bindings(action.bindings[0][0].name, action.params);
 				}
 			} else {
-				console.log("running jsonp");
+
 				do_jsonp(action, func);
 			}
 		}
@@ -225,7 +225,7 @@ var axn = (function(){
 
 
 	var do_jsonp = function(action, callback){
-		console.log("doing it");
+
 		var new_script = document.createElement('script');
 		new_script.src =  action.jsonp + '&' + defaults.jsonp_callback + '=' + action.name;
 
