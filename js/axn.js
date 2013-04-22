@@ -10,6 +10,29 @@ var axn = (function(){
 		dom_ready_callback: function(){}
 	};
 
+	// regex to help parse param attribute
+	// TODO - refactor this regex to trim off leading/trailing
+	// whitespace from param value
+	var _param_regex = /:?[a-zA-Z0-9-_.\/\?=\!\&]+/g;
+
+	// regex to get colon-prefixed strings to denote
+	// data properties to update
+	var _bind_param_regex = /:[a-zA-Z_]+/g;
+
+	// regex to grab action name for binding
+	// not global as we just want the first match
+	var _action_name_regex = /[a-zA-Z-_]+/;
+
+	// object to contain user defined functions
+	var _fn = {};
+
+	// object to hold actions defined in data attributes
+	var _actions = {};
+
+	var _stored_data = {};
+
+	var _bind_target = {};
+
 	// utility to merge object properties
 	var _merge = function(orig_obj, new_obj){
 
@@ -25,24 +48,6 @@ var axn = (function(){
 
 		return false;
 	};
-
-	// regex to help parse param attribute
-	// TODO - refactor this regex to trim off leading/trailing
-	// whitespace from param value
-	var _param_regex = /:?[a-zA-Z0-9-_.\/\?=\!\&]+/g;
-
-	// object to contain user defined functions
-	var _fn = {};
-
-	// object to hold actions defined in data attributes
-	var _actions = {};
-
-	var _stored_data = {};
-
-	var _bind_target = {};
-
-	// object to be returned
-	var axn = new Function();
 
 	// initializer object that's to be called
 	// just before closure returns the 'axn' object
@@ -264,6 +269,8 @@ var axn = (function(){
 		_bind_target = {};
 	};
 
+	// object to be returned
+	var axn = new Function();
 
 	// attach methods to axn's prototype object
 	axn.prototype = {
@@ -283,7 +290,11 @@ var axn = (function(){
 				return false;
 			};
 
-			_bind_target = this.getActions(namespace);
+			// get name and params from string
+			var bind_name = namespace.match(_action_name_regex);
+			var bind_data = namespace.match(_bind_param_regex);
+
+			_bind_target = this.getActions(bind_name);
 
 			return this;
 		},

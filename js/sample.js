@@ -19,7 +19,7 @@ axn.ready(function(){
 	// action 'something-editor' is a text field
 	// that will update paramters for the actions
 	// bound to 'something' above
-	axn.bind('something').to('something-editor', function(args){
+	axn.bind('something:content').to('something-editor', function(args){
 
 		// update data params for elements bound
 		//  to the 'something' action
