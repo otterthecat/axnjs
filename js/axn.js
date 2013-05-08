@@ -10,6 +10,29 @@ var axn = (function(){
 		dom_ready_callback: function(){}
 	};
 
+	var _axn_prop = function(){
+
+		this.name = "",
+		this.params = "",
+		this.evt = "",
+		this.element = {},
+		this.jsonp = "",
+		this.bindings = []
+	};
+
+	_axn_prop.prototype = {
+
+		setValues: function(obj){
+
+			this.name = obj.name;
+			this.params = obj.params;
+			this.evt = obj.evt;
+			this.element = obj.element;
+			this.jsonp = obj.jsonp;
+			this.bindings = obj.bindings;
+		}
+	}
+
 	// regex to help parse param attribute
 	// TODO - refactor this regex to trim off leading/trailing
 	// whitespace from param value
@@ -160,6 +183,16 @@ var axn = (function(){
 		return _parse_data_elements(all_elements);
 	};
 
+
+	/* parse JS object from axn attribute */
+	var _parse_axn = function(el_obj){
+
+		var _axn = el_obj.getAttribute('data-' + _defaults.data_name);
+
+		return JSON.parse(_axn);
+	}
+
+
 	// goes through an array of elements and updates the '_actions' object with
 	// arrays of objects containing an individual element and parameter object
 	// for use when the '_fn' object is finally required.
@@ -177,14 +210,14 @@ var axn = (function(){
 					_actions[el_action] = new Array();
 				};
 
-				_actions[el_action].push({
+				_actions[el_action].push(new _axn_prop({
 					name: el_action,
 					params: _parse_params(el),
 					evt: _parse_attr(el, 'event'),
 					element: el,
 					jsonp: _parse_attr(el, 'jsonp'),
 					bindings: []
-				});
+				}));
 			}
 		}
 	};
