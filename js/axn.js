@@ -78,7 +78,7 @@ var axn = (function(){
 
 		document.onreadystatechange = function(){
 
-			if(document.readyState == 'complete'){
+			if(document.readyState === 'complete'){
 
 				// get all _actions
 				_find_actions(_defaults.root_selector);
@@ -210,16 +210,21 @@ var axn = (function(){
 					_actions[el_action] = new Array();
 				};
 
-				_actions[el_action].push(new _axn_prop({
+				var ap = new _axn_prop();
+				ap.setValues({
 					name: el_action,
 					params: _parse_params(el),
 					evt: _parse_attr(el, 'event'),
 					element: el,
 					jsonp: _parse_attr(el, 'jsonp'),
 					bindings: []
-				}));
+				});
+
+				_actions[el_action].push(ap);
 			}
 		}
+
+		return _actions;
 	};
 
 
