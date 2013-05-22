@@ -33,6 +33,35 @@ var axn = (function(){
 		}
 	}
 
+	var _ajaxify = function(obj){
+
+		if(obj.hasOwnProperty("ajax")){
+
+			return obj;
+		}
+
+
+		var _ajax = {};
+
+		if (window.XMLHttpRequest) {
+
+			_ajax = new XMLHttpRequest();
+		} else if (window.ActiveXObject) {
+
+			_ajax = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+
+		if(obj.hasOwnProperty("prototype")){
+
+			obj.prototype.ajax = _ajax;
+		} else {
+
+			obj.ajax = _ajax;
+		}
+		
+		return obj;
+	}
+
 	// regex to help parse param attribute
 	// TODO - refactor this regex to trim off leading/trailing
 	// whitespace from param value
@@ -215,7 +244,7 @@ var axn = (function(){
 					name: el_action,
 					params: _parse_params(el),
 					evt: _parse_attr(el, 'event'),
-					element: el,
+					element: _ajaxify(el),
 					jsonp: _parse_attr(el, 'jsonp'),
 					bindings: []
 				});
