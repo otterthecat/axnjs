@@ -58,7 +58,7 @@ var axn = (function(){
 
 			obj.ajax = _ajax;
 		}
-		
+
 		return obj;
 	}
 
@@ -211,16 +211,6 @@ var axn = (function(){
 
 		return _parse_data_elements(all_elements);
 	};
-
-
-	/* parse JS object from axn attribute */
-	var _parse_axn = function(el_obj){
-
-		var _axn = el_obj.getAttribute('data-' + _defaults.data_name);
-
-		return JSON.parse(_axn);
-	}
-
 
 	// goes through an array of elements and updates the '_actions' object with
 	// arrays of objects containing an individual element and parameter object
