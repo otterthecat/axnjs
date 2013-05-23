@@ -112,7 +112,9 @@ var axn = (function(){
 				// get all _actions
 				_find_actions(_defaults.root_selector);
 
-				callback();
+				if(typeof callback === 'function'){
+					callback();
+				}
 
 				// fire action functions on page/dom load
 				_apply_actions();

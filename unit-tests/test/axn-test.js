@@ -1,35 +1,48 @@
-test('AXN Methods - .getActions()', function(){
+axn.ready(function(){
 
-	deepEqual(typeof axn.getActions(), 'object', '.getActions() returns an object');
-});
+	test('AXN Methods - .getActions()', function(){
 
-test('AXN Methods - .getFunctions()', function(){
-
-	deepEqual(typeof axn.getFunctions(), 'object', '.getFunctions() returns an object');
-});
-
-test('AXN Methods - .getConfig()', function(){
-
-	deepEqual(typeof axn.getConfig(), 'object', '.getConfig() returns an object');
-});
-
-test('AXN Methods - .configure()', function(){
-
-	axn.configure({
-		root_selector: 'body'
+		deepEqual(typeof axn.getActions(), 'object', '.getActions() returns an object');
 	});
 
-	deepEqual(axn.getConfig().root_selector, 'body', '.configure() properly adds user settings');
+	test('AXN Methods - .getFunctions()', function(){
 
-});
+		deepEqual(typeof axn.getFunctions(), 'object', '.getFunctions() returns an object');
+	});
 
-test('AXN Methods - .add()', function(){
+	test('AXN Methods - .getConfig()', function(){
 
-	var test_var = false
-	axn.add('unit-test', function(){
+		deepEqual(typeof axn.getConfig(), 'object', '.getConfig() returns an object');
+	});
 
-		test_var =  "added unit-test";
-	}).exec();
+	test('AXN Methods - .configure()', function(){
 
-	deepEqual(typeof axn.getFunctions('unit-test'), 'function', '.add() successfully added function');
+		axn.configure({
+			root_selector: 'body'
+		});
+
+		deepEqual(axn.getConfig().root_selector, 'body', '.configure() properly adds user settings');
+
+	});
+
+	test('AXN Methods - .add()', function(){
+
+		var test_var = false
+		axn.add('unit-test', function(){
+
+			test_var =  "added unit-test";
+		}).exec();
+
+		deepEqual(typeof axn.getFunctions('unit-test'), 'function', '.add() successfully added function');
+	});
+
+	test("AXN Property - element.ajax", 1, function(){
+		stop();
+		axn.add('ajax-test', function(){
+			
+			strictEqual(typeof  this.ajax, "object", "AXN element contains ajax object");
+			start();
+		}).exec();
+	});
+
 });
