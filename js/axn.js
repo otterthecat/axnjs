@@ -269,7 +269,7 @@ var axn = (function(){
 
         // set property value as string delimited by a single space
         // TODO - refactor regular expression so as to not require the join below
-        the_params[property_name] = param_array.join("");
+        the_params[property_name] = param_array.join(" ");
       }
     }
 
