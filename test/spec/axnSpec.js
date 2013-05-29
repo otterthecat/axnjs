@@ -1,5 +1,3 @@
-axn.ready(function(){
-
   describe("Axn", function(){
 
     it("should configure internal properties", function(){
@@ -24,7 +22,7 @@ axn.ready(function(){
       axn.add("jasmine_test", function(args){
 
         _test_var = args.content;
-      }).exec();
+      }).ready();
 
       it ("should create a new internal action", function(){
 
@@ -41,25 +39,6 @@ axn.ready(function(){
         expect(axn.getStoredData("jasmine_test").content).toBe("hello world");
       });
 
-      describe("when action implements JSONP", function(){
-
-        var return_object;
-        axn.add("jsonp_test", function(data){
-
-          return_object = data;
-        });
-
-        waits(1000);
-
-        it("should execute automatically", function(){
-
-          expect(typeof return_object).toBe("object");
-        });
-
-      });
-
     });
 
   });
-
-});
