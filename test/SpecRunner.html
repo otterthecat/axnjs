@@ -11,13 +11,9 @@
 
   <!-- include source files here... -->
   <script type="text/javascript" src="../js/axn.js"></script>
-  <script type="text/javascript" src="src/Player.js"></script>
-  <script type="text/javascript" src="src/Song.js"></script>
 
   <!-- include spec files here... -->
   <script type="text/javascript" src="spec/axnSpec.js"></script>
-  <script type="text/javascript" src="spec/SpecHelper.js"></script>
-  <script type="text/javascript" src="spec/PlayerSpec.js"></script>
 
   <script type="text/javascript">
     (function() {
@@ -52,6 +48,7 @@
 
 <body>
 
-  <div data-axn="jasmine-test" data-axn-params="content: hello world"></div>
+  <div data-axn="jasmine_test" data-axn-params="content: hello world"></div>
+  <div data-axn="jsonp_test" data-axn-jsonp="https://api.twitter.com/1/statuses/user_timeline.json?screen_name=otterthecat&count=3&"></div>
 </body>
 </html>
