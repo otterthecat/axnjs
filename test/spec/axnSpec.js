@@ -18,11 +18,18 @@
     describe("when adding an action", function(){
 
       var _test_var = null;
+      var _jsonp_response = null;
+
+      axn.add("jsonp_test", function(data){
+        _jsonp_response = data;
+      });
 
       axn.add("jasmine_test", function(args){
 
         _test_var = args.content;
       }).ready();
+
+      waits(1000);
 
       it ("should create a new internal action", function(){
 
@@ -37,6 +44,10 @@
       it("should store internal data", function(){
 
         expect(axn.getStoredData("jasmine_test").content).toBe("hello world");
+      });
+
+      it("should make JSONP call if set", function(){
+        expect(typeof _jsonp_response).toBe("object");
       });
 
     });
