@@ -1,4 +1,4 @@
-var axn = (function(){
+(function(){
 
   var _version = "0.02";
 
@@ -10,17 +10,17 @@ var axn = (function(){
     dom_ready_callback: function(){}
   };
 
-  var _axn_prop = function(){
+  var Axn_Prop = function(){
 
     this.name = "",
     this.params = "",
     this.evt = "",
     this.element = {},
     this.jsonp = "",
-    this.bindings = []
+    this.bindings = [];
   };
 
-  _axn_prop.prototype = {
+  Axn_Prop.prototype = {
 
     setValues: function(obj){
 
@@ -31,7 +31,7 @@ var axn = (function(){
         this.jsonp = obj.jsonp;
         this.bindings = obj.bindings;
     }
-  }
+  };
 
   var _ajaxify = function(obj){
 
@@ -48,7 +48,7 @@ var axn = (function(){
       _ajax = new XMLHttpRequest();
     } else if (window.ActiveXObject) {
 
-      _ajax = new ActiveXObject("Microsoft.XMLHTTP");
+      _ajax = new window.ActiveXObject("Microsoft.XMLHTTP");
     }
 
     if(obj.hasOwnProperty("prototype")){
@@ -60,20 +60,16 @@ var axn = (function(){
     }
 
     return obj;
-  }
+  };
 
   // regex to help parse param attribute
   // TODO - refactor this regex to trim off leading/trailing
   // whitespace from param value
-  var _param_regex = /:?[a-zA-Z0-9-_.\/\?=\!\&]+/g;
-
-  // regex to get colon-prefixed strings to denote
-  // data properties to update
-  var _bind_param_regex = /:[a-zA-Z_]+/g;
+  var _param_regex = /:?[a-zA-Z0-9\-_.\/\?=\!\&]+/g;
 
   // regex to grab action name for binding
   // not global as we just want the first match
-  var _action_name_regex = /[a-zA-Z-_]+/;
+  var _action_name_regex = /[a-zA-Z\-_]+/;
 
   // object to contain user defined functions
   var _fn = {};
@@ -122,7 +118,7 @@ var axn = (function(){
     };
   };
 
-  var _execute_fn = function(action, func, binds){
+  var _execute_fn = function(action, func){
 
       // TODO - better handle checks for JSONP
       // (I just wanted to get the feature in fast)
@@ -132,7 +128,8 @@ var axn = (function(){
 
           if(!action.jsonp){
 
-            func.call(action.element, action.params);
+            // TODO - event argument should probably be listed first
+            func.call(action.element, action.params, event);
 
             if(action.bindings.length > 0){
 
@@ -141,7 +138,7 @@ var axn = (function(){
           } else{
 
             _do_jsonp(action, func);
-          };
+          }
 
         }, false);
       } else {
@@ -176,7 +173,7 @@ var axn = (function(){
 
         _fn[namespace].call(_actions[namespace][i].element, _actions[namespace][i].params);
       }
-    };
+    }
   };
 
   // waits for DOM to be fully loaded before looping through _actions object
@@ -227,10 +224,10 @@ var axn = (function(){
 
         if(!_actions.hasOwnProperty(el_action)){
 
-          _actions[el_action] = new Array();
-        };
+          _actions[el_action] = [];
+        }
 
-        var ap = new _axn_prop();
+        var ap = new Axn_Prop();
         ap.setValues({
           name: el_action,
           params: _parse_params(el),
@@ -310,7 +307,7 @@ var axn = (function(){
 
     if(_fn.hasOwnProperty(namespace)){
 
-      console.error("AXN _fn object already has property ["+ namespace +"]");
+      window.console.error("AXN _fn object already has property ["+ namespace +"]");
       return false;
     }
 
@@ -328,10 +325,10 @@ var axn = (function(){
   };
 
   // object to be returned
-  var axn = new Function();
+  var AXN = function(){};
 
   // attach methods to axn's prototype object
-  axn.prototype = {
+  AXN.prototype = {
 
     version: _version,
 
@@ -346,11 +343,10 @@ var axn = (function(){
       if(typeof namespace !== 'string'){
 
         return false;
-      };
+      }
 
       // get name and params from string
       var bind_name = namespace.match(_action_name_regex);
-      var bind_data = namespace.match(_bind_param_regex);
 
       _bind_target = this.getActions(bind_name);
 
@@ -375,8 +371,8 @@ var axn = (function(){
         _merge(_defaults, options_obj);
       } else {
 
-          console.error("AXN.config() requires object literal");
-      };
+          window.console.error("AXN.config() requires object literal");
+      }
 
       return this;
     },
@@ -411,5 +407,5 @@ var axn = (function(){
   };
 
   // return new axn
-  return new axn();
+  return window.axn = new AXN();
 })();
