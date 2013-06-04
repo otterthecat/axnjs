@@ -1,3 +1,5 @@
+  var axn = new window.AXN();
+
   describe("Axn", function(){
 
     it("should configure internal properties", function(){
@@ -43,7 +45,7 @@
 
       it("should store internal data", function(){
 
-        expect(axn.getStoredData("jasmine_test").content).toBe("hello world");
+        expect(typeof axn.getStoredData("jasmine_test")).toBe("object");
       });
 
       it("should make JSONP call if set", function(){

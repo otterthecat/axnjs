@@ -407,5 +407,5 @@
   };
 
   // return new axn
-  return window.axn = new AXN();
+  return window.AXN = AXN;
 })();

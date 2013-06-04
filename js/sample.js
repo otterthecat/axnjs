@@ -1,5 +1,6 @@
 // AXN.JS
 // sample usages
+var axn = new window.AXN();
 axn.ready(function(){
 
 	// action 'something' is set for 2 different
