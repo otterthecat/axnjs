@@ -10,6 +10,25 @@ module.exports = function(grunt) {
       '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
       ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */\n',
     // Task configuration.
+    concat: {
+      options: {
+        banner: '<%= banner %>',
+        stripBanners: true
+      },
+      dist: {
+        src: ['js/<%= pkg.name %>.js'],
+        dest: 'dist/<%= pkg.name %>.js'
+      }
+    },
+    uglify: {
+      options: {
+        banner: '<%= banner %>'
+      },
+      dist: {
+        src: '<%= concat.dist.dest %>',
+        dest: 'dist/<%= pkg.name %>.min.js'
+      }
+    },
     jshint: {
       options: {
         curly: true,
@@ -44,14 +63,13 @@ module.exports = function(grunt) {
   });
 
   // These plugins provide necessary tasks.
-/*  grunt.loadNpmTasks('grunt-contrib-concat');
+  // grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-qunit');
-  grunt.loadNpmTasks('grunt-contrib-watch');*/
   grunt.loadNpmTasks('grunt-contrib-jasmine');
   grunt.loadNpmTasks('grunt-contrib-jshint');
 
   // Default task.
-  grunt.registerTask('default', ['jshint', 'jasmine']);
+  grunt.registerTask('default', ['jshint', 'jasmine', 'concat', 'uglify']);
 
 };
