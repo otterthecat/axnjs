@@ -159,7 +159,7 @@
 
   var _update_bindings = function(namespace, data, live){
 
-    var do_live = typeof live === 'boolean' && live === true;
+    var do_live = (live === false) ? live : true;
 
     var all_actions = _actions[namespace];
     for(var i = 0; i < all_actions.length; i += 1){
