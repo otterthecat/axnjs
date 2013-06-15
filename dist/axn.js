@@ -1,4 +1,4 @@
-/*! axn js - v0.1.0 - 2013-06-04
+/*! axn js - v0.1.0 - 2013-06-07
 * https://github.com/otterthecat/axnjs
 * Copyright (c) 2013 Otter the Cat; Licensed MIT, GPL */
 (function(){
