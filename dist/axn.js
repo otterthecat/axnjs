@@ -1,4 +1,4 @@
-/*! axn js - v0.1.0 - 2013-06-07
+/*! axn js - v0.1.0 - 2013-07-14
 * https://github.com/otterthecat/axnjs
 * Copyright (c) 2013 Otter the Cat; Licensed MIT, GPL */
 (function(){
@@ -162,7 +162,7 @@
 
   var _update_bindings = function(namespace, data, live){
 
-    var do_live = typeof live === 'boolean' && live === true;
+    var do_live = (live === false) ? live : true;
 
     var all_actions = _actions[namespace];
     for(var i = 0; i < all_actions.length; i += 1){
@@ -254,7 +254,7 @@
 
     var the_params = {};
 
-    var str_value = element_obj.getAttribute('data-' + _defaults.data_name + '-params'); 
+    var str_value = element_obj.getAttribute('data-' + _defaults.data_name + '-params');
 
     if(typeof str_value === "string"){
 
@@ -382,7 +382,7 @@
 
     // the methods below are all primarily intended for
     // debugging purposes, but may have applications
-    // under certain situations. 
+    // under certain situations.
     getActions: function(property_str){
 
       return _actions.hasOwnProperty(property_str) ? _actions[property_str] : _actions;

@@ -31,12 +31,12 @@ axn.ready(function(){
   // make a JSONP call, with the callback defined below
   axn.add('jtothep', function(data){
 
-    var tweets = "";
-    for(var i = 0; i < data.length; i += 1){
+    var ddgResults = "";
+    for(var i = 0; i < data.RelatedTopics.length; i += 1){
 
-      tweets += "<li>" + data[i].text + "</li>";
+      ddgResults += "<li>" + data.RelatedTopics[i].Text + "</li>";
     }
 
-    this.innerHTML += tweets;
+    this.innerHTML += ddgResults;
   });
 });

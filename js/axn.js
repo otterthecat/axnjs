@@ -251,7 +251,7 @@
 
     var the_params = {};
 
-    var str_value = element_obj.getAttribute('data-' + _defaults.data_name + '-params'); 
+    var str_value = element_obj.getAttribute('data-' + _defaults.data_name + '-params');
 
     if(typeof str_value === "string"){
 
@@ -379,7 +379,7 @@
 
     // the methods below are all primarily intended for
     // debugging purposes, but may have applications
-    // under certain situations. 
+    // under certain situations.
     getActions: function(property_str){
 
       return _actions.hasOwnProperty(property_str) ? _actions[property_str] : _actions;
